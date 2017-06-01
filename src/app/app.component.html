@@ -1,0 +1,54 @@
+<div class="container">
+  <header>
+    <img src="http://happilyeverchan.xyz/img/monogram.png" alt="monogram" style="height: auto;
+          width: auto;
+          max-width: 75%;
+          max-height: 100%;
+          display: block;
+          margin-left: auto;
+          margin-right: auto" />
+  </header>
+
+  <input #search  (input)="onSearchChange($event.target.value)" placeholder="Searching">
+  <table class="highlight centered">
+    <thead>
+    <tr>
+      <th>Index</th>
+      <th>Name</th>
+      <th>Table</th>
+      <th>Side</th>
+    </tr>
+    </thead>
+    <tbody *ngIf="searching">
+    <tr  *ngFor="let item of item | async | searchFilter: search.value ">
+      <td>{{item.index +1 }}</td>
+      <td>{{item.name}}</td>
+      <td>{{item.table}}</td>
+      <td>{{item.side}}</td>
+    </tr>
+    </tbody>
+    <tbody *ngIf="!searching">
+    <tr *ngFor="let item of item | async | paginate: { itemsPerPage: 10, currentPage: p } ">
+      <td>{{item.index +1 }}</td>
+      <td>{{item.name}}</td>
+      <td>{{item.table}}</td>
+      <td>{{item.side}}</td>
+    </tr>
+    </tbody>
+  </table>
+  <pagination-controls  *ngIf="!searching"
+                        (pageChange)="p = $event"
+                        maxSize="10"
+                        directionLinks="true"
+                        autoHide="true"
+                        previousLabel="Previous"
+                        nextLabel="Next"
+                        screenReaderPaginationLabel="Pagination"
+                        screenReaderPageLabel="page"
+                        screenReaderCurrentLabel="You're on page"
+                        class="center-align">
+  </pagination-controls>
+
+</div>
+
+
