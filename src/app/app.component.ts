@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter} from '@angular/core';
 import {AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2/database';
+import {MaterializeAction} from 'angular2-materialize';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,7 @@ import {AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable} f
 export class AppComponent {
   searching: boolean = false;
   p: number = 1;
-  title = 'app works!';
+  modalActions = new EventEmitter<string|MaterializeAction>();
   item: FirebaseListObservable<any>;
   constructor(db: AngularFireDatabase) {
     this.item = db.list('/');
@@ -18,11 +19,13 @@ export class AppComponent {
     console.log(searchValue.length);
     if(searchValue){
       this.searching= true;
-      console.log("search :"+this.searching);
     }else{
       this.searching= false;
-      console.log("search :"+this.searching);
-
     }}
-
+  openModal() {
+    this.modalActions.emit({action:"modal",params:['open']});
+  }
+  closeModal() {
+    this.modalActions.emit({action:"modal",params:['close']});
+  }
 }
